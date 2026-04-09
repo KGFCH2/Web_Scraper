@@ -407,9 +407,11 @@ For issues or questions:
 
 ---
 
-## 📄 License
+## 📄 License & Purpose
 
-This project is provided as-is for educational purposes.
+🎓 **Educational Project**: This application was developed as a self-learning exercise for knowledge gain and understanding of web scraping technologies, modular Python architecture, and automated reporting.
+
+⚠️ **Disclaimer**: This project is provided as-is for educational purposes. Always ensure you have permission before scraping any website and comply with their `robots.txt` and Terms of Service.
 
 ---
 
