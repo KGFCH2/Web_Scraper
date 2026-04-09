@@ -15,8 +15,6 @@ output/
 # Editor settings
 .vscode/
 .idea/
-*.swp
-*.swo
 
 # Project specific
 .DS_Store
