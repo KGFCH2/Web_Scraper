@@ -19,32 +19,50 @@ def export_pdf(data):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", "B", 16)
-    pdf.set_text_color(0, 102, 204)  # Blue title
-    pdf.cell(200, 15, txt="Web Scraping Report", ln=True, align='C')
-    pdf.ln(10)
+    pdf.set_text_color(0, 51, 102)  # Darker blue title
+    pdf.cell(190, 15, txt="WEB SCRAPING REPORT", ln=True, align='C')
+    pdf.set_font("Arial", "I", 8)
+    pdf.set_text_color(128, 128, 128)
+    pdf.cell(190, 10, txt="Generated on: " + pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S'), ln=True, align='R')
+    pdf.ln(5)
 
     pdf.set_font("Arial", size=10)
     pdf.set_text_color(0, 0, 0)  # Black text
 
     for key, values in data.items():
-        safe_key = key.replace('_', ' ').title().encode('latin-1', 'replace').decode('latin-1')
-        pdf.set_font("Arial", "B", 12)
-        pdf.set_fill_color(240, 240, 240)  # Light gray background for headers
-        pdf.cell(200, 8, txt=safe_key + ":", ln=True, fill=True)
-        pdf.set_font("Arial", size=10)
-        pdf.set_fill_color(255, 255, 255)  # White background
+        if not values: continue
+        
+        safe_key = key.replace('_', ' ').upper().encode('latin-1', 'replace').decode('latin-1')
+        pdf.set_font("Arial", "B", 11)
+        pdf.set_fill_color(220, 230, 241)  # Light blue background for headers
+        pdf.set_text_color(0, 51, 102)
+        pdf.cell(0, 8, txt=" " + safe_key, ln=True, fill=True)
+        pdf.ln(2)
+        
+        pdf.set_font("Arial", size=9)
+        pdf.set_text_color(30, 30, 30)
+        pdf.set_fill_color(255, 255, 255)
 
         if isinstance(values, list):
-            for v in values[:20]:
-                safe_v = str(v).encode('latin-1', 'replace').decode('latin-1')
-                pdf.multi_cell(0, 6, txt="- " + safe_v)
-                pdf.ln(2)
+            for i, v in enumerate(values[:50]): # Increased limit to 50
+                safe_v = str(v).strip().encode('latin-1', 'replace').decode('latin-1')
+                if not safe_v: continue
+                
+                # Check for page break
+                if pdf.get_y() > 270:
+                    pdf.add_page()
+                
+                pdf.set_font("Arial", "B", 9)
+                pdf.write(5, f" {i+1}. ")
+                pdf.set_font("Arial", size=9)
+                pdf.multi_cell(0, 5, txt=safe_v)
+                pdf.ln(1)
         else:
-            safe_v = str(values).encode('latin-1', 'replace').decode('latin-1')
-            pdf.multi_cell(0, 6, txt=safe_v)
-            pdf.ln(5)
+            safe_v = str(values).strip().encode('latin-1', 'replace').decode('latin-1')
+            pdf.multi_cell(0, 5, txt=safe_v)
+            pdf.ln(3)
 
-        pdf.ln(5)
+        pdf.ln(4)
 
     pdf.output("output/output.pdf")
 
